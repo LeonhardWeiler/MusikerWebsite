@@ -1,0 +1,347 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+@font-face {
+    font-family: "Mauline";
+    src: local("Mauline"), url("../assets/fonts/Mauline.woff2") format("woff2");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "SF-Pro_Regular";
+    src: local("SF Pro Regular"),
+        url("../assets/fonts/SF-Pro_Semibold.woff2") format("woff2");
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "SF-Pro_Semibold";
+    src: local("SF Pro Semibold"),
+        url("../assets/fonts/SF-Pro_Semibold.woff2") format("woff2");
+    font-weight: 600;
+    font-style: normal;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+::selection {
+    color: var(--clr-secondary);
+    background-color: var(--clr-dark);
+}
+
+::-moz-selection {
+    color: var(--clr-secondary);
+    background-color: var(--clr-dark);
+}
+
+:focus-visible {
+    outline: 2px solid var(--clr-dark);
+}
+
+:root {
+    --clr-dark: hsl(300 100% 0% / 100%);
+    --clr-light: hsl(24 15% 94% / 100%);
+    --clr-secondary: hsl(30 16% 87% / 100%);
+    --fs-title-l: 13rem;
+    --fs-title-m: 3.5rem;
+    --fs-link: 1.25rem;
+    --fs-description: 1.12rem;
+    --spacing-section: 2rem;
+    --spacing-link: 0.5rem;
+    --ff-title: "Mauline";
+    --shadow: rgba(17, 12, 46, 0.05) 0px 0px 20px 9px;
+}
+
+html {
+    scroll-snap-type: block mandatory;
+}
+
+body {
+    margin-inline: 7.5%;
+    line-height: 1.5;
+    font-family: "SF-Pro_Regular", sans-serif;
+    color: var(--clr-dark);
+    background-color: var(--clr-light);
+    overflow-x: hidden;
+}
+
+section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-section);
+    align-items: center;
+    height: 100svh;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+}
+
+h2 {
+    margin-top: auto;
+    font-family: var(--ff-title);
+    font-size: clamp(5rem, 15vw + 1px, var(--fs-title-l));
+    text-align: center;
+    text-transform: uppercase;
+    line-height: 1.1;
+}
+
+h3 {
+    font-family: var(--ff-title);
+    font-size: clamp(3rem, 4vw + 1px, var(--fs-title-m));
+    line-height: 1;
+}
+
+nav {
+    width: 90%;
+    margin-bottom: 1rem;
+}
+
+ul {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--spacing-link);
+    padding: var(--spacing-link);
+    background-color: var(--clr-secondary);
+    border-radius: 1rem;
+    box-shadow: var(--shadow);
+}
+
+li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    gap: var(--spacing-link);
+    padding: 0.75rem 1.5rem;
+    font-size: clamp(1rem, 3vw + 1px, var(--fs-link));
+    border-radius: 0.8rem;
+}
+
+a {
+    font: inherit;
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img,
+iframe {
+    max-width: 100%;
+    text-align: center;
+    user-select: none;
+    vertical-align: middle;
+    font-style: italic;
+    background-repeat: no-repeat;
+    border-radius: clamp(2px, 1vw + 1px, 10px);
+}
+
+dialog {
+    background-color: var(--clr-secondary);
+    margin: auto;
+    border: 0;
+    max-width: 1200px;
+    width: 80%;
+    border-radius: 1rem;
+    padding: 2rem 5%;
+}
+
+dialog::backdrop {
+    background-color: hsla(0, 0%, 0%, 0.35);
+}
+
+button {
+    border: 0;
+}
+
+.img-big {
+    width: 100%;
+    background-size: cover;
+    box-shadow: var(--shadow);
+    min-height: 20rem;
+    height: 36rem;
+    border-radius: 3rem 3rem 0 0;
+    object-fit: cover;
+}
+
+.link__more-a::selection {
+    color: var(--clr-dark);
+    background-color: var(--clr-light);
+}
+
+.link__more-a::-moz-selection {
+    color: var(--clr-dark);
+    background-color: var(--clr-light);
+}
+
+.link__more-a:focus-visible {
+    outline: 2px solid var(--clr-light);
+}
+
+.link__genre {
+    background-color: var(--clr-light);
+    cursor: default;
+}
+
+.link__more {
+    color: var(--clr-light);
+    background-color: var(--clr-dark);
+}
+
+.svg-rotate {
+    width: 1.25em;
+    transition: transform 200ms ease-in-out;
+}
+
+.link-rotate:hover .svg-rotate {
+    transform: rotate(20deg);
+}
+
+.svg-arrow {
+    height: 1em;
+}
+
+.link__more:hover .svg-arrow {
+    animation: 1s cubic-bezier(0.5, 0, 0, 1) arrow_left-right;
+}
+
+@keyframes arrow_left-right {
+
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+        transform: translateX(0);
+    }
+
+    40% {
+        transform: translateX(-40%);
+    }
+
+    60% {
+        transform: translateX(-5%);
+    }
+}
+
+.dialog__grid-container {
+    display: grid;
+    grid-template-rows: 70px 1fr 1fr;
+    grid-template-areas:
+        'title title title'
+        'img text text'
+        'songs video video';
+    row-gap: 0.5rem;
+    column-gap: 2%;
+}
+
+.dialog__top-bar {
+    grid-area: title;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 3rem;
+}
+
+.dialog__close {
+    height: 40%;
+    transition: all 200ms ease-in-out;
+    cursor: pointer;
+}
+
+.dialog__close:hover {
+    transform: rotate(20deg);
+}
+
+p {
+    grid-area: text;
+    text-align: justify;
+    letter-spacing: -0.5px;
+    font-size: clamp(0.88rem, 1.12vw + 1px, var(--fs-description));
+}
+
+.dialog__img {
+    grid-area: img;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    max-height: 25rem;
+    box-shadow: var(--shadow);
+}
+
+.album-container {
+    box-shadow: var(--shadow);
+    grid-area: songs;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    background-color: var(--clr-light);
+    padding: 1.2rem;
+    border-radius: 1rem;
+    gap: 0.7rem;
+}
+
+.album-container__img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    transition: all 200ms ease-in-out;
+    box-shadow: var(--shadow);
+}
+
+.album-container__img:hover {
+    transform: scale(1.03);
+}
+
+.album-container__link {
+    display: block;
+}
+
+iframe {
+    box-shadow: var(--shadow);
+    grid-area: video;
+    width: 100%;
+    height: 100%;
+    min-height: 20rem;
+    transition: all 200ms ease-in-out;
+    border: 0;
+}
+
+iframe:hover {
+    transform: scale(1.01);
+}
+
+@media (max-width: 1070px) {
+    .dialog__close {
+        height: 1.8rem;
+    }
+
+    .dialog__grid-container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .album-container {
+        display: flex;
+        flex-wrap: wrap;
+        flex: 1;
+    }
+
+    .album-container__link {
+        min-width: 5rem;
+        width: 100%;
+        flex-basis: 9rem;
+        flex-grow: 1;
+    }
+}
