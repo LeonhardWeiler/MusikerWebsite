@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 const beatlesOpen = document.getElementById("beatles__open");
 const beatlesDialog = document.getElementById("beatles__dialog");
 const beatlesClose = document.getElementById("beatles__close");
