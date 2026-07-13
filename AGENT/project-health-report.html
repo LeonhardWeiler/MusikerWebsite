@@ -1,320 +1,467 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Project Health Report &mdash; Musicians</title>
     <style>
+      :root {
+        --bg: #f7f6f4;
+        --card: #ffffff;
+        --ink: #1c1a17;
+        --muted: #6b655d;
+        --border: #e4e0da;
+        --crit: #b3261e;
+        --high: #d1591a;
+        --med: #b8860b;
+        --low: #3a7ca5;
+        --info: #6b655d;
+        --good: #2e7d47;
+      }
+
+      @media (prefers-color-scheme: dark) {
         :root {
-            --bg: #f7f6f4;
-            --card: #ffffff;
-            --ink: #1c1a17;
-            --muted: #6b655d;
-            --border: #e4e0da;
-            --crit: #b3261e;
-            --high: #d1591a;
-            --med: #b8860b;
-            --low: #3a7ca5;
-            --info: #6b655d;
-            --good: #2e7d47;
+          --bg: #171614;
+          --card: #201e1b;
+          --ink: #eceae6;
+          --muted: #a49d93;
+          --border: #35322e;
         }
+      }
 
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg: #171614;
-                --card: #201e1b;
-                --ink: #eceae6;
-                --muted: #a49d93;
-                --border: #35322e;
-            }
-        }
+      * {
+        box-sizing: border-box;
+      }
 
-        * {
-            box-sizing: border-box;
-        }
+      body {
+        margin: 0;
+        padding: 2rem 1rem 4rem;
+        font-family:
+          system-ui,
+          -apple-system,
+          "Segoe UI",
+          sans-serif;
+        line-height: 1.55;
+        color: var(--ink);
+        background: var(--bg);
+      }
 
-        body {
-            margin: 0;
-            padding: 2rem 1rem 4rem;
-            font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-            line-height: 1.55;
-            color: var(--ink);
-            background: var(--bg);
-        }
+      main {
+        max-width: 60rem;
+        margin: 0 auto;
+      }
 
-        main {
-            max-width: 60rem;
-            margin: 0 auto;
-        }
+      h1 {
+        margin: 0 0 0.25rem;
+        font-size: 1.9rem;
+      }
 
-        h1 {
-            margin: 0 0 0.25rem;
-            font-size: 1.9rem;
-        }
+      .meta {
+        color: var(--muted);
+        font-size: 0.9rem;
+        margin-bottom: 1.5rem;
+      }
 
-        .meta {
-            color: var(--muted);
-            font-size: 0.9rem;
-            margin-bottom: 1.5rem;
-        }
+      .summary {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-bottom: 2rem;
+      }
 
-        .summary {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem;
-            margin-bottom: 2rem;
-        }
+      .count {
+        border: 1px solid var(--border);
+        border-radius: 0.6rem;
+        padding: 0.5rem 0.9rem;
+        background: var(--card);
+        font-size: 0.9rem;
+      }
 
-        .count {
-            border: 1px solid var(--border);
-            border-radius: 0.6rem;
-            padding: 0.5rem 0.9rem;
-            background: var(--card);
-            font-size: 0.9rem;
-        }
+      .count b {
+        font-size: 1.15rem;
+      }
 
-        .count b {
-            font-size: 1.15rem;
-        }
+      h2 {
+        font-size: 1.3rem;
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 0.35rem;
+        margin-top: 2.5rem;
+      }
 
-        h2 {
-            font-size: 1.3rem;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 0.35rem;
-            margin-top: 2.5rem;
-        }
+      ol.toc {
+        columns: 2;
+        gap: 2rem;
+        font-size: 0.92rem;
+        color: var(--muted);
+      }
 
+      @media (max-width: 40rem) {
         ol.toc {
-            columns: 2;
-            gap: 2rem;
-            font-size: 0.92rem;
-            color: var(--muted);
+          columns: 1;
         }
+      }
 
-        @media (max-width: 40rem) {
-            ol.toc { columns: 1; }
-        }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-left-width: 5px;
+        border-radius: 0.6rem;
+        padding: 1rem 1.15rem;
+        margin: 1rem 0;
+      }
 
-        .card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-left-width: 5px;
-            border-radius: 0.6rem;
-            padding: 1rem 1.15rem;
-            margin: 1rem 0;
-        }
+      .card h3 {
+        margin: 0 0 0.5rem;
+        font-size: 1.05rem;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        flex-wrap: wrap;
+      }
 
-        .card h3 {
-            margin: 0 0 0.5rem;
-            font-size: 1.05rem;
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            flex-wrap: wrap;
-        }
+      .badge {
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: #fff;
+        padding: 0.12rem 0.5rem;
+        border-radius: 1rem;
+      }
 
-        .badge {
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            color: #fff;
-            padding: 0.12rem 0.5rem;
-            border-radius: 1rem;
-        }
+      .b-crit {
+        background: var(--crit);
+      }
+      .b-high {
+        background: var(--high);
+      }
+      .b-med {
+        background: var(--med);
+      }
+      .b-low {
+        background: var(--low);
+      }
+      .b-info {
+        background: var(--info);
+      }
 
-        .b-crit { background: var(--crit); }
-        .b-high { background: var(--high); }
-        .b-med  { background: var(--med); }
-        .b-low  { background: var(--low); }
-        .b-info { background: var(--info); }
+      .card.crit {
+        border-left-color: var(--crit);
+      }
+      .card.high {
+        border-left-color: var(--high);
+      }
+      .card.med {
+        border-left-color: var(--med);
+      }
+      .card.low {
+        border-left-color: var(--low);
+      }
+      .card.info {
+        border-left-color: var(--info);
+      }
 
-        .card.crit { border-left-color: var(--crit); }
-        .card.high { border-left-color: var(--high); }
-        .card.med  { border-left-color: var(--med); }
-        .card.low  { border-left-color: var(--low); }
-        .card.info { border-left-color: var(--info); }
+      .loc {
+        font-family: ui-monospace, "SF Mono", Menlo, monospace;
+        font-size: 0.82rem;
+        color: var(--muted);
+        margin-bottom: 0.5rem;
+      }
 
-        .loc {
-            font-family: ui-monospace, "SF Mono", Menlo, monospace;
-            font-size: 0.82rem;
-            color: var(--muted);
-            margin-bottom: 0.5rem;
-        }
+      .card p {
+        margin: 0.5rem 0 0;
+      }
 
-        .card p {
-            margin: 0.5rem 0 0;
-        }
+      .rec {
+        margin-top: 0.6rem;
+        font-size: 0.95rem;
+      }
 
-        .rec {
-            margin-top: 0.6rem;
-            font-size: 0.95rem;
-        }
+      .rec b {
+        color: var(--good);
+      }
 
-        .rec b { color: var(--good); }
+      .legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+        font-size: 0.8rem;
+        color: var(--muted);
+        margin-top: 2rem;
+      }
 
-        .legend {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.6rem;
-            font-size: 0.8rem;
-            color: var(--muted);
-            margin-top: 2rem;
-        }
+      ul.plain {
+        padding-left: 1.2rem;
+      }
 
-        ul.plain {
-            padding-left: 1.2rem;
-        }
-
-        ul.plain li {
-            margin: 0.35rem 0;
-        }
+      ul.plain li {
+        margin: 0.35rem 0;
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <main>
-        <h1>Project Health Report</h1>
-        <p class="meta">Project: <b>Musicians</b> (static site) &middot; Date: 2026-07-13 &middot; Branch:
-            <code>main</code> &middot; Scope: full fresh scan of HTML/CSS/JS, assets and docs</p>
+      <h1>Project Health Report</h1>
+      <p class="meta">
+        Project: <b>Musicians</b> (static site) &middot; Date: 2026-07-13
+        &middot; Branch: <code>main</code> &middot; Scope: full fresh scan of
+        HTML/CSS/JS, assets and docs
+      </p>
 
-        <div class="summary">
-            <span class="count"><b>7</b> open findings</span>
-            <span class="count" style="border-color:var(--high)"><b>1</b> high</span>
-            <span class="count" style="border-color:var(--med)"><b>2</b> medium</span>
-            <span class="count" style="border-color:var(--low)"><b>3</b> low</span>
-            <span class="count" style="border-color:var(--info)"><b>1</b> info</span>
+      <div class="summary">
+        <span class="count"><b>7</b> open findings</span>
+        <span class="count" style="border-color: var(--high)"
+          ><b>1</b> high</span
+        >
+        <span class="count" style="border-color: var(--med)"
+          ><b>2</b> medium</span
+        >
+        <span class="count" style="border-color: var(--low)"><b>3</b> low</span>
+        <span class="count" style="border-color: var(--info)"
+          ><b>1</b> info</span
+        >
+      </div>
+
+      <h2>Table of contents</h2>
+      <ol class="toc">
+        <li>A11Y-1 &mdash; "More" trigger is not keyboard-operable (high)</li>
+        <li>
+          BUG-1 &mdash; Regular font face loads the Semibold file (medium)
+        </li>
+        <li>CQ-1 &mdash; Duplicated dialog wiring in script.js (medium)</li>
+        <li>
+          SEC-1 &mdash; External links miss <code>rel="noopener"</code> (low)
+        </li>
+        <li>
+          A11Y-2 &mdash; Hidden scrollbars + mandatory snap hurt discoverability
+          (low)
+        </li>
+        <li>CQ-2 &mdash; Minor JS style inconsistencies (low)</li>
+        <li>
+          INFO-1 &mdash; No automated checks; external image dependency (info)
+        </li>
+      </ol>
+
+      <h2>Open findings</h2>
+
+      <div class="card high">
+        <h3>
+          <span class="badge b-high">high</span> A11Y-1 &mdash; The "More"
+          trigger cannot be operated by keyboard
+        </h3>
+        <div class="loc">
+          index.html:47 and index.html:147 &middot; js/script.js
         </div>
+        <p>
+          The dialog is opened by
+          <code
+            >&lt;a class="link__more-a"
+            id="beatles__open"&gt;More&lt;/a&gt;</code
+          >. An <code>&lt;a&gt;</code> without an <code>href</code> is not
+          focusable and exposes no button role, so keyboard and
+          assistive-technology users cannot reach or activate it. Opening the
+          biography dialog is a core flow of the page, and it is unavailable
+          without a mouse.
+        </p>
+        <p class="rec">
+          <b>Recommendation:</b> Use a real
+          <code>&lt;button type="button"&gt;</code> for the trigger (keep the
+          existing IDs and click handlers). It is focusable, activates on
+          Enter/Space and announces as a button.
+        </p>
+      </div>
 
-        <h2>Table of contents</h2>
-        <ol class="toc">
-            <li>A11Y-1 &mdash; "More" trigger is not keyboard-operable (high)</li>
-            <li>BUG-1 &mdash; Regular font face loads the Semibold file (medium)</li>
-            <li>CQ-1 &mdash; Duplicated dialog wiring in script.js (medium)</li>
-            <li>SEC-1 &mdash; External links miss <code>rel="noopener"</code> (low)</li>
-            <li>A11Y-2 &mdash; Hidden scrollbars + mandatory snap hurt discoverability (low)</li>
-            <li>CQ-2 &mdash; Minor JS style inconsistencies (low)</li>
-            <li>INFO-1 &mdash; No automated checks; external image dependency (info)</li>
-        </ol>
+      <div class="card med">
+        <h3>
+          <span class="badge b-med">medium</span> BUG-1 &mdash; The
+          "SF-Pro_Regular" font face loads the Semibold file
+        </h3>
+        <div class="loc">css/style.css:19</div>
+        <p>
+          The <code>@font-face</code> named <code>SF-Pro_Regular</code> sets its
+          <code>src</code> to
+          <code>../assets/fonts/SF-Pro_Semibold.woff2</code>, even though
+          <code>SF-Pro_Regular.woff2</code> exists in the same folder. Body text
+          (which uses <code>font-family: "SF-Pro_Regular"</code>) is therefore
+          rendered with the Semibold weight rather than the intended regular
+          weight.
+        </p>
+        <p class="rec">
+          <b>Recommendation:</b> Point the <code>SF-Pro_Regular</code> face at
+          <code>../assets/fonts/SF-Pro_Regular.woff2</code>.
+        </p>
+      </div>
 
-        <h2>Open findings</h2>
+      <div class="card med">
+        <h3>
+          <span class="badge b-med">medium</span> CQ-1 &mdash; Per-artist dialog
+          wiring is duplicated
+        </h3>
+        <div class="loc">js/script.js:3-23</div>
+        <p>
+          The open/close logic is copy-pasted once per artist (Beatles, Bob
+          Dylan). Each new artist requires another near-identical block, and the
+          markup/JS must be kept in sync by hand &mdash; an easy source of
+          mismatched-ID bugs.
+        </p>
+        <p class="rec">
+          <b>Recommendation:</b> Derive the behaviour from the markup, e.g.
+          iterate over all <code>.link__more-a</code> triggers (or query each
+          section's dialog/close button by a shared data attribute) and attach
+          the handlers in a loop.
+        </p>
+      </div>
 
-        <div class="card high">
-            <h3><span class="badge b-high">high</span> A11Y-1 &mdash; The "More" trigger cannot be operated by
-                keyboard</h3>
-            <div class="loc">index.html:47 and index.html:147 &middot; js/script.js</div>
-            <p>The dialog is opened by <code>&lt;a class="link__more-a" id="beatles__open"&gt;More&lt;/a&gt;</code>. An
-                <code>&lt;a&gt;</code> without an <code>href</code> is not focusable and exposes no button role, so
-                keyboard and assistive-technology users cannot reach or activate it. Opening the biography dialog is a
-                core flow of the page, and it is unavailable without a mouse.</p>
-            <p class="rec"><b>Recommendation:</b> Use a real <code>&lt;button type="button"&gt;</code> for the trigger
-                (keep the existing IDs and click handlers). It is focusable, activates on Enter/Space and announces as a
-                button.</p>
+      <div class="card low">
+        <h3>
+          <span class="badge b-low">low</span> SEC-1 &mdash; External links open
+          in a new tab without <code>rel="noopener"</code>
+        </h3>
+        <div class="loc">
+          index.html &mdash; all <code>target="_blank"</code> anchors
         </div>
+        <p>
+          The Instagram/YouTube/Spotify links use
+          <code>target="_blank"</code> without
+          <code>rel="noopener noreferrer"</code>. Modern browsers imply
+          <code>noopener</code> for <code>_blank</code>, but adding it
+          explicitly protects older browsers from reverse tabnabbing and
+          documents the intent.
+        </p>
+        <p class="rec">
+          <b>Recommendation:</b> Add <code>rel="noopener noreferrer"</code> to
+          every <code>target="_blank"</code> link.
+        </p>
+      </div>
 
-        <div class="card med">
-            <h3><span class="badge b-med">medium</span> BUG-1 &mdash; The "SF-Pro_Regular" font face loads the Semibold
-                file</h3>
-            <div class="loc">css/style.css:19</div>
-            <p>The <code>@font-face</code> named <code>SF-Pro_Regular</code> sets its <code>src</code> to
-                <code>../assets/fonts/SF-Pro_Semibold.woff2</code>, even though <code>SF-Pro_Regular.woff2</code> exists
-                in the same folder. Body text (which uses <code>font-family: "SF-Pro_Regular"</code>) is therefore
-                rendered with the Semibold weight rather than the intended regular weight.</p>
-            <p class="rec"><b>Recommendation:</b> Point the <code>SF-Pro_Regular</code> face at
-                <code>../assets/fonts/SF-Pro_Regular.woff2</code>.</p>
+      <div class="card low">
+        <h3>
+          <span class="badge b-low">low</span> A11Y-2 &mdash; Hidden scrollbars
+          plus mandatory scroll-snap reduce discoverability
+        </h3>
+        <div class="loc">
+          css/style.css:32-34 (<code>::-webkit-scrollbar { display: none }</code
+          >), css/style.css:65 (<code>scroll-snap-type: block mandatory</code>)
         </div>
+        <p>
+          Scrollbars are hidden globally while sections use mandatory
+          full-height snap. On desktop there is little visible affordance that a
+          second artist section exists below the fold, and the missing scrollbar
+          removes the usual position cue.
+        </p>
+        <p class="rec">
+          <b>Recommendation:</b> Consider keeping a subtle scroll indicator, or
+          a visible cue between sections, so users know there is more to scroll
+          to.
+        </p>
+      </div>
 
-        <div class="card med">
-            <h3><span class="badge b-med">medium</span> CQ-1 &mdash; Per-artist dialog wiring is duplicated</h3>
-            <div class="loc">js/script.js:3-23</div>
-            <p>The open/close logic is copy-pasted once per artist (Beatles, Bob Dylan). Each new artist requires another
-                near-identical block, and the markup/JS must be kept in sync by hand &mdash; an easy source of
-                mismatched-ID bugs.</p>
-            <p class="rec"><b>Recommendation:</b> Derive the behaviour from the markup, e.g. iterate over all
-                <code>.link__more-a</code> triggers (or query each section's dialog/close button by a shared data
-                attribute) and attach the handlers in a loop.</p>
+      <div class="card low">
+        <h3>
+          <span class="badge b-low">low</span> CQ-2 &mdash; Minor JavaScript
+          style inconsistencies
+        </h3>
+        <div class="loc">js/script.js:13-15</div>
+        <p>
+          Assignments such as
+          <code>const bobdylanOpen= document.getElementById(...)</code> miss the
+          space before <code>=</code>, and the two artist blocks are formatted
+          slightly differently. Purely cosmetic, but it stands out in a tiny
+          file.
+        </p>
+        <p class="rec">
+          <b>Recommendation:</b> Normalise spacing (and ideally fold this into
+          the CQ-1 refactor). A formatter such as Prettier would keep it
+          consistent automatically.
+        </p>
+      </div>
+
+      <div class="card info">
+        <h3>
+          <span class="badge b-info">info</span> INFO-1 &mdash; No automated
+          checks; content depends on external image URLs
+        </h3>
+        <div class="loc">
+          repository-wide &middot; index.html (<code>i.scdn.co</code> image
+          sources)
         </div>
+        <p>
+          There is no lint/test/build step (reasonable for a page this size).
+          Separately, hero, dialog and album images are hot-linked from
+          Spotify's CDN (<code>i.scdn.co</code>); if those URLs change or expire
+          the images silently break.
+        </p>
+        <p class="rec">
+          <b>Recommendation:</b> Optional &mdash; add a lightweight HTML/CSS
+          linter or link checker in CI, and consider self-hosting critical
+          images to remove the external dependency.
+        </p>
+      </div>
 
-        <div class="card low">
-            <h3><span class="badge b-low">low</span> SEC-1 &mdash; External links open in a new tab without
-                <code>rel="noopener"</code></h3>
-            <div class="loc">index.html &mdash; all <code>target="_blank"</code> anchors</div>
-            <p>The Instagram/YouTube/Spotify links use <code>target="_blank"</code> without
-                <code>rel="noopener noreferrer"</code>. Modern browsers imply <code>noopener</code> for
-                <code>_blank</code>, but adding it explicitly protects older browsers from reverse tabnabbing and
-                documents the intent.</p>
-            <p class="rec"><b>Recommendation:</b> Add <code>rel="noopener noreferrer"</code> to every
-                <code>target="_blank"</code> link.</p>
-        </div>
+      <h2>What is already strong</h2>
+      <ul class="plain">
+        <li>
+          Clean semantic structure: <code>&lt;section&gt;</code> with
+          <code>aria-label</code>, <code>&lt;nav&gt;</code>/<code
+            >&lt;ul&gt;</code
+          >
+          link bars, and headings in order.
+        </li>
+        <li>
+          Uses the native <code>&lt;dialog&gt;</code> element with
+          <code>showModal()</code> &mdash; free focus trapping and
+          Escape-to-close.
+        </li>
+        <li>
+          Decorative SVGs are marked <code>aria-hidden="true"</code>; the close
+          icon has a <code>&lt;title&gt;</code>; images carry descriptive
+          <code>alt</code> text.
+        </li>
+        <li>
+          Styling is well organised around CSS custom properties (colours, font
+          sizes, spacing) and uses <code>clamp()</code> for fluid typography.
+        </li>
+        <li>
+          Responsive: the dialog grid gracefully collapses to a column on narrow
+          screens.
+        </li>
+        <li>
+          Zero dependencies and no build step &mdash; trivial to deploy and
+          maintain.
+        </li>
+        <li>
+          Now documented: <code>README.md</code>, <code>CLAUDE.md</code> and
+          <code>CHANGELOG.md</code>, with
+          <code>SPDX-License-Identifier</code> headers on source files.
+        </li>
+      </ul>
 
-        <div class="card low">
-            <h3><span class="badge b-low">low</span> A11Y-2 &mdash; Hidden scrollbars plus mandatory scroll-snap reduce
-                discoverability</h3>
-            <div class="loc">css/style.css:32-34 (<code>::-webkit-scrollbar { display: none }</code>), css/style.css:65
-                (<code>scroll-snap-type: block mandatory</code>)</div>
-            <p>Scrollbars are hidden globally while sections use mandatory full-height snap. On desktop there is little
-                visible affordance that a second artist section exists below the fold, and the missing scrollbar removes
-                the usual position cue.</p>
-            <p class="rec"><b>Recommendation:</b> Consider keeping a subtle scroll indicator, or a visible cue between
-                sections, so users know there is more to scroll to.</p>
-        </div>
+      <h2>Deliberate decisions (not findings)</h2>
+      <ul class="plain">
+        <li>
+          <b>No framework / no build system.</b> Plain HTML/CSS/JS served by
+          GitHub Pages from the repo root is an intentional simplicity choice
+          for a small showcase.
+        </li>
+        <li>
+          <b>External CDN images.</b> Album and artist art is intentionally
+          hot-linked from Spotify rather than bundled (tracked as a fragility
+          note in INFO-1).
+        </li>
+        <li>
+          <b>License: GPL-3.0-or-later.</b> Declared via SPDX headers; the
+          <code>LICENSE</code> file is the canonical GPLv3 text.
+        </li>
+      </ul>
 
-        <div class="card low">
-            <h3><span class="badge b-low">low</span> CQ-2 &mdash; Minor JavaScript style inconsistencies</h3>
-            <div class="loc">js/script.js:13-15</div>
-            <p>Assignments such as <code>const bobdylanOpen= document.getElementById(...)</code> miss the space before
-                <code>=</code>, and the two artist blocks are formatted slightly differently. Purely cosmetic, but it
-                stands out in a tiny file.</p>
-            <p class="rec"><b>Recommendation:</b> Normalise spacing (and ideally fold this into the CQ-1 refactor). A
-                formatter such as Prettier would keep it consistent automatically.</p>
-        </div>
-
-        <div class="card info">
-            <h3><span class="badge b-info">info</span> INFO-1 &mdash; No automated checks; content depends on external
-                image URLs</h3>
-            <div class="loc">repository-wide &middot; index.html (<code>i.scdn.co</code> image sources)</div>
-            <p>There is no lint/test/build step (reasonable for a page this size). Separately, hero, dialog and album
-                images are hot-linked from Spotify's CDN (<code>i.scdn.co</code>); if those URLs change or expire the
-                images silently break.</p>
-            <p class="rec"><b>Recommendation:</b> Optional &mdash; add a lightweight HTML/CSS linter or link checker in
-                CI, and consider self-hosting critical images to remove the external dependency.</p>
-        </div>
-
-        <h2>What is already strong</h2>
-        <ul class="plain">
-            <li>Clean semantic structure: <code>&lt;section&gt;</code> with <code>aria-label</code>,
-                <code>&lt;nav&gt;</code>/<code>&lt;ul&gt;</code> link bars, and headings in order.</li>
-            <li>Uses the native <code>&lt;dialog&gt;</code> element with <code>showModal()</code> &mdash; free focus
-                trapping and Escape-to-close.</li>
-            <li>Decorative SVGs are marked <code>aria-hidden="true"</code>; the close icon has a
-                <code>&lt;title&gt;</code>; images carry descriptive <code>alt</code> text.</li>
-            <li>Styling is well organised around CSS custom properties (colours, font sizes, spacing) and uses
-                <code>clamp()</code> for fluid typography.</li>
-            <li>Responsive: the dialog grid gracefully collapses to a column on narrow screens.</li>
-            <li>Zero dependencies and no build step &mdash; trivial to deploy and maintain.</li>
-            <li>Now documented: <code>README.md</code>, <code>CLAUDE.md</code> and <code>CHANGELOG.md</code>, with
-                <code>SPDX-License-Identifier</code> headers on source files.</li>
-        </ul>
-
-        <h2>Deliberate decisions (not findings)</h2>
-        <ul class="plain">
-            <li><b>No framework / no build system.</b> Plain HTML/CSS/JS served by GitHub Pages from the repo root is an
-                intentional simplicity choice for a small showcase.</li>
-            <li><b>External CDN images.</b> Album and artist art is intentionally hot-linked from Spotify rather than
-                bundled (tracked as a fragility note in INFO-1).</li>
-            <li><b>License: GPL-3.0-or-later.</b> Declared via SPDX headers; the <code>LICENSE</code> file is the
-                canonical GPLv3 text.</li>
-        </ul>
-
-        <div class="legend">
-            <span><span class="badge b-crit">critical</span> must fix now</span>
-            <span><span class="badge b-high">high</span> fix soon</span>
-            <span><span class="badge b-med">medium</span> should fix</span>
-            <span><span class="badge b-low">low</span> nice to fix</span>
-            <span><span class="badge b-info">info</span> optional / awareness</span>
-        </div>
+      <div class="legend">
+        <span><span class="badge b-crit">critical</span> must fix now</span>
+        <span><span class="badge b-high">high</span> fix soon</span>
+        <span><span class="badge b-med">medium</span> should fix</span>
+        <span><span class="badge b-low">low</span> nice to fix</span>
+        <span><span class="badge b-info">info</span> optional / awareness</span>
+      </div>
     </main>
-</body>
-
+  </body>
 </html>
