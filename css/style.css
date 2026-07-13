@@ -31,10 +31,6 @@
     font-style: normal;
 }
 
-::-webkit-scrollbar {
-    display: none;
-}
-
 ::selection {
     color: var(--clr-secondary);
     background-color: var(--clr-dark);
