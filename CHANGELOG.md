@@ -5,6 +5,28 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2026-07-13
+
+### Added
+
+- GitHub Actions workflow that lints `index.html` with htmlhint on every push
+  and pull request.
+
+### Fixed
+
+- The dialog trigger is now a real `<button>` instead of an `href`-less `<a>`,
+  so the biography dialog is reachable and operable by keyboard.
+- Body text now loads the regular SF Pro weight; the `@font-face` previously
+  pointed at the Semibold file.
+
+### Changed
+
+- Dialog open/close wiring is derived from the markup in a single loop instead
+  of a copy-pasted block per artist.
+- External `target="_blank"` links now carry `rel="noopener noreferrer"`.
+- The scrollbar is kept visible as a scroll position cue for the scroll-snap
+  sections.
+
 ## [0.2.0] - 2026-07-13
 
 ### Added
