@@ -50,6 +50,9 @@ There is no toolchain to install. To work on the site:
    file server (for example `python -m http.server`) so relative paths resolve.
 3. Edit the HTML/CSS/JS and reload.
 
+The HTML is linted in CI (htmlhint) on every push and pull request. You can run
+the same check locally with `npx htmlhint index.html`.
+
 ### Adding another artist
 
 Each artist is a self-contained `<section>` in `index.html` following the same

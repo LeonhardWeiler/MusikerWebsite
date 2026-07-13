@@ -11,9 +11,13 @@ root, so `index.html` must stay at the root and all asset paths stay relative.
 
 ## Verify changes
 
-There is no lint/test/build toolchain. To verify a change, open `index.html` in a
+There is no local toolchain to install. To verify a change, open `index.html` in a
 browser (or serve the folder, e.g. `python -m http.server`, so relative paths and
 fonts resolve) and check the affected artist section and its dialog.
+
+CI runs htmlhint against `index.html` on every push and pull request
+(`.github/workflows/lint.yml`); it executes via `npx`, so nothing is installed
+into the repo. Run the same check locally with `npx htmlhint index.html`.
 
 ## Architecture
 
