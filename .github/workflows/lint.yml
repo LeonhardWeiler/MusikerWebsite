@@ -1,0 +1,20 @@
+name: Lint
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  htmlhint:
+    name: Lint HTML
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      # Runs entirely in CI via npx; no toolchain or dependencies are added to
+      # the repository, keeping the site itself build-step free.
+      - name: Run htmlhint
+        run: npx --yes htmlhint@1 index.html
