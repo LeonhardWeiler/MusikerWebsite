@@ -178,6 +178,19 @@ button {
     object-fit: cover;
 }
 
+.link__more-a {
+    font: inherit;
+    color: inherit;
+    background: transparent;
+    padding: 0;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.link__more-a:hover {
+    text-decoration: underline;
+}
+
 .link__more-a::selection {
     color: var(--clr-dark);
     background-color: var(--clr-light);
