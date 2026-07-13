@@ -18,7 +18,7 @@
 @font-face {
     font-family: "SF-Pro_Regular";
     src: local("SF Pro Regular"),
-        url("../assets/fonts/SF-Pro_Semibold.woff2") format("woff2");
+        url("../assets/fonts/SF-Pro_Regular.woff2") format("woff2");
     font-weight: 500;
     font-style: normal;
 }
